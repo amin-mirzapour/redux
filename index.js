@@ -1,5 +1,8 @@
 import { legacy_createStore as createStore } from 'redux';
-import { bindActionCreators, combineReducers } from 'redux';
+import { bindActionCreators, combineReducers, applyMiddleware } from 'redux';
+import pkg from 'redux-logger';
+const createLogger = pkg.createLogger;
+const logger = createLogger({});
 //constants
 const CAKE_ORDERED = 'CAKE_ORDERED';
 const CAKE_RESTOCKED = 'CAKE_RESTOCKED';
@@ -88,12 +91,15 @@ const rootreducer = combineReducers({
   cake: cakeReducer,
   iceCream: iceCreamReducer,
 });
-const store = createStore(rootreducer);
+const store = createStore(rootreducer, applyMiddleware(logger));
 console.log('initial State', store.getState());
 
-const unsubscribe = store.subscribe(() =>
-  console.log('update Store', store.getState())
-);
+const unsubscribe = store.subscribe(() => {});
+
+//before logger installation
+// const unsubscribe = store.subscribe(() =>
+//   console.log('update Store', store.getState())
+// );
 
 // store.dispatch(orderCake());
 // store.dispatch(orderCake());
